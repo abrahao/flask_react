@@ -1,2 +1,2 @@
 # flask_react
-## Aplicação para testar a integração do React no Flask 
+## Aplicação simples para testar a integração do React no Flask 

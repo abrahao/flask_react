@@ -4,27 +4,28 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-dado = []
+# Lista para armazenar as tarefas
+tarefas = []
 
 @app.route('/api/data', methods=['GET'])
 def get_data():
-    data = {'message': dado}
+    # Retorna todas as tarefas armazenadas
+    data = {'message': tarefas}
     return jsonify(data)
 
 @app.route('/api/data', methods=['POST'])
-def post_data():
-    global dado
+def create_task():
+    # Obtém os dados do corpo da requisição
+    data = request.get_json()
     
-    # Recebe o número do corpo da requisição JSON
-    numero = request.json.get('numero')
+    # Cria uma nova tarefa com um ID único e a descrição fornecida
+    task = {'id': len(tarefas) + 1, 'description': data['description']}
     
-    if numero is not None:
-        dado.append(numero)  # Adiciona o número à lista
-        data = {'message': f'Número {numero} recebido e armazenado.'}
-        return jsonify(data)
-    else:
-        return jsonify({'error': 'Número não fornecido.'}), 400
-
+    # Adiciona a nova tarefa à lista de tarefas
+    tarefas.append(task)
+    
+    # Retorna a nova tarefa e o status 201 (Created)
+    return jsonify(task), 201
 
 if __name__ == '__main__':
     app.run(debug=True)

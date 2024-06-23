@@ -1,36 +1,17 @@
-// src/components/DataFetcher.js
-import React, { useEffect, useState } from 'react';
-import api from '../api';
+import React from 'react';
 
-function DataFetcher() {
-  const [data, setData] = useState(null); // Estado inicial como null
-  const [isLoading, setIsLoading] = useState(true); // Estado de carregamento
-  const [error, setError] = useState(null); // Estado de erro
-
-  useEffect(() => {
-    api.get('/data')
-      .then(response => {
-        setData(response.data);
-        setIsLoading(false);
-      })
-      .catch(error => {
-        setError('Erro ao buscar dados');
-        setIsLoading(false);
-      });
-  }, []);
-  
-
-  if (isLoading) {
-    return <p>Carregando...</p>;
-  }
-
-  if (error) {
-    return <p>{error}</p>;
-  }
-
+function DataFetcher({ tasks }) {
   return (
     <div>
-      {data && data.message ? <p>{data.message}</p> : <p>Nenhuma mensagem recebida</p>}
+      {tasks.length > 0 ? (
+        <ul>
+          {tasks.map(task => (
+            <li key={task.id}>{task.description}</li>
+          ))}
+        </ul>
+      ) : (
+        <p>Nenhuma tarefa recebida</p>
+      )}
     </div>
   );
 }
